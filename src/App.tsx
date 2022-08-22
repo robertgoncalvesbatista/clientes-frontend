@@ -1,11 +1,14 @@
 import { useContext } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "./contexts/Auth/AuthContext";
 import { RequireAuth } from "./contexts/Auth/RequireAuth";
 
-import { Home } from "./pages/Home";
 import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { Home } from "./pages/Home";
 import { Private } from './pages/Private';
+import { CreateCustomer } from "./pages/CreateCustomer";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -38,10 +41,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/create/customer" element={<RequireAuth><CreateCustomer /></RequireAuth>} />
         <Route path="/private" element={<RequireAuth><Private /></RequireAuth>} />
       </Routes>
 
-      <footer className="container fixed-bottom">
+      <footer className="container">
         <div className="py-3 my-4">
           <ul className="nav justify-content-center border-bottom pb-3 mb-3">
             <li className="nav-item"><a href="#" className="nav-link px-2 text-muted">Home</a></li>

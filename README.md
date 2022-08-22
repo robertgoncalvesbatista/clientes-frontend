@@ -4,7 +4,7 @@
 
 -   [x] Deverá ser possível que o usuário faça login na aplicação e, caso não possua conta, realize um novo cadastro.
 -   [x] Após cadastrar uma nova conta, enviar um e-mail de boas vindas.
--   [ ] Após realizar login, o usuário deve ter acesso à uma listagem de clientes, contendo paginação e algum filtro ou modo de pesquisa.
+-   [x] Após realizar login, o usuário deve ter acesso à uma listagem de clientes, contendo paginação e algum filtro ou modo de pesquisa.
 -   [x] Deverá ser possível cadastrar um novo cliente, contendo os seguintes campos:
 -   -   Nome (Obrigatório);
 -   -   CPF (Obrigatório);
@@ -17,8 +17,8 @@
 -   -   Complemento;
 -   -   Telefone.
 
--   [ ] No cadastro, quando o usuário preencher o campo de CEP, o sistema deve consultar na API ViaCEP (http://viacep.com.br) e preencher os demais campos automaticamente (rua, bairro, cidade e uf).
--   [ ] O campo de telefone deverá ter uma máscara para padronização do telefone(Exemplo: '(99) 9 9999-9999').
+-   [x] No cadastro, quando o usuário preencher o campo de CEP, o sistema deve consultar na API ViaCEP (http://viacep.com.br) e preencher os demais campos automaticamente (rua, bairro, cidade e uf).
+-   [x] O campo de telefone deverá ter uma máscara para padronização do telefone(Exemplo: '(99) 9 9999-9999').
 -   [x] Deverá ser possível alterar e excluir clientes.
 
 ## Requisitos Não Funcionais
@@ -26,7 +26,7 @@
 -   [x] No backend, utilizar PHP e Laravel (versão 7 ou superior).
 -   [x] Usar Postgres como banco de dados.
 -   [x] Usar o Eloquent para acesso a banco de dados.
--   [x] Usar migrations para criação e alteração do banco de dados;
+-   [x] Usar migrations para criação e alteração do banco de dados.
 -   [x] No frontend, usar tecnologia ou framework de sua preferência.
 -   [ ] As validações devem ocorrer tanto no backend como no frontend.
 -   [ ] Cobrir a aplicação com testes automatizados.

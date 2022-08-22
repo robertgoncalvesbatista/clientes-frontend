@@ -35,6 +35,19 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         return false;
     }
 
+    // Gera um token de acesso ao fornecer "email" e "password"
+    const signup = async (name: string, email: string, password: string, password_confirmation: string) => {
+        const data = await api.signup(name, email, password, password_confirmation);
+
+        if (data.user && data.token) {
+            setUser(data.user);
+            setToken(data.token);
+            return true;
+        }
+
+        return false;
+    }
+
     // Destrói a sessão
     const signout = async () => {
         await api.logout();
@@ -50,7 +63,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     // Retorna o elemento JSX do AuthProvider dentro do contexto de autenticação
     // Isso permite que o AuthProvider seja utilizado com elemento do HTML
     return (
-        <AuthContext.Provider value={{ user, signin, signout }}>
+        <AuthContext.Provider value={{ user, signin, signup, signout }}>
             {children}
         </AuthContext.Provider>
     )

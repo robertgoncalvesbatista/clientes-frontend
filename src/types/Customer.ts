@@ -1,10 +1,13 @@
-import { Address } from "./Address";
-
 export type Customer = {
-    id: number;
+    id?: number;
     name: string;
     cpf: string;
-    address: Address;
-    category: string;
-    telephone: string;
+    category?: string;
+    telephone?: string;
+    cep: string;
+    rua?: string;
+    bairro?: string;
+    cidade?: string;
+    uf?: string;
+    complemento?: string;
 }

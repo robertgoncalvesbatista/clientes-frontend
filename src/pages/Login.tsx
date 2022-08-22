@@ -39,7 +39,7 @@ export const Login = () => {
                             <label htmlFor="floatingPassword">Password</label>
                         </div>
 
-                        <button className="w-100 btn btn-lg btn-primary" onClick={handleLogin}>Sign up</button>
+                        <button className="w-100 btn btn-lg btn-primary" onClick={handleLogin}>Acessar</button>
                     </div>
                 </div>
             </div>
