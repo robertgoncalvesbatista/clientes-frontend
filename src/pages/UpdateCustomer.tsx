@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useMask } from "../hooks/useMask"
 import { useApi } from "../hooks/useApi";
-import { Customer } from "../types/Customer";
 
-export const UpdateCliente = (props: { customer: Customer }) => {
+export const UpdateCustomer = () => {
     const [name, setName] = useState("");
     const [cpf, setCPF] = useState("");
     const [category, setCategory] = useState("");
@@ -19,7 +18,6 @@ export const UpdateCliente = (props: { customer: Customer }) => {
 
     const mask = useMask();
     const api = useApi();
-
     const navigate = useNavigate();
 
     const fetchCEP = (cep: string) => {
@@ -41,12 +39,15 @@ export const UpdateCliente = (props: { customer: Customer }) => {
             });
     }
 
-    const handleUpdate = async (id: number, customer: Customer) => {
-        if (name && cpf && cep) {
-            const customer = { id: id, name, cpf, category, cep, rua, bairro, cidade, uf, complemento, telephone }
+    const { id } = useParams();
 
-            await api.updateCustomer(customer);
-            navigate("/private");
+    const handleUpdate = async () => {
+        if (name && cpf && cep) {
+            const customer = { name, cpf, category, telephone, cep, rua, bairro, cidade, uf, complemento };
+
+            await api.updateCustomer(id, customer);
+
+            navigate("/customers");
         }
     };
 
@@ -58,59 +59,60 @@ export const UpdateCliente = (props: { customer: Customer }) => {
                 <div className="d-flex mb-3">
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputName">Nome</label>
-                        <input type="text" value={props.customer.name} onChange={e => setName(e.target.value)} className="form-control" id="inputName" placeholder="Digite o nome..." />
+                        <input type="text" onChange={e => setName(e.target.value)} className="form-control" id="inputName" placeholder="Digite o nome..." />
                     </div>
 
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputCPF">CPF</label>
-                        <input type="text" value={props.customer.cpf} onChange={e => setCPF(mask.cpf(e.target.value))} className="form-control" id="inputCPF" placeholder="Digite o CPF..." />
+                        <input type="text" value={cpf} onChange={e => setCPF(mask.cpf(e.target.value))} className="form-control" id="inputCPF" placeholder="Digite o CPF..." />
                     </div>
                 </div>
 
                 <div className="d-flex mb-3">
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputCategoria">Categoria</label>
-                        <input type="text" value={props.customer.category} onChange={e => setCategory(e.target.value)} className="form-control" id="inputCategoria" placeholder="Digite a categoria..." />
+                        <input type="text" onChange={e => setCategory(e.target.value)} className="form-control" id="inputCategoria" placeholder="Digite a categoria..." />
                     </div>
 
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputTelefone">Telefone</label>
-                        <input type="tel" value={props.customer.telephone} onChange={e => setTelephone(mask.phone(e.target.value))} className="form-control" id="inputTelefone" placeholder="Digite o telefone..." />
+                        <input type="tel" value={telephone} onChange={e => setTelephone(mask.phone(e.target.value))} className="form-control" id="inputTelefone" placeholder="Digite o telefone..." />
                     </div>
                 </div>
 
                 <div className="d-flex mb-3">
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputCEP">CEP</label>
-                        <input type="text" value={props.customer.cep} onChange={e => { fetchCEP(e.target.value); setCEP(mask.cep(e.target.value)); }} className="form-control" id="inputCEP" placeholder="Digite o CEP..." />
+                        <input type="text" value={cep} onChange={e => { fetchCEP(e.target.value); setCEP(mask.cep(e.target.value)); }} className="form-control" id="inputCEP" placeholder="Digite o CEP..." />
                     </div>
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputRua">Rua</label>
-                        <input type="text" value={props.customer.rua} onChange={e => setRua(e.target.value)} className="form-control" id="inputRua" placeholder="Digite a rua..." />
+                        <input type="text" value={rua} onChange={e => setRua(e.target.value)} className="form-control" id="inputRua" placeholder="Digite a rua..." />
                     </div>
 
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputBairro">Bairro</label>
-                        <input type="text" value={props.customer.bairro} onChange={e => setBairro(e.target.value)} className="form-control" id="inputBairro" placeholder="Digite o bairro..." />
+                        <input type="text" value={bairro} onChange={e => setBairro(e.target.value)} className="form-control" id="inputBairro" placeholder="Digite o bairro..." />
                     </div>
                 </div>
 
                 <div className="d-flex mb-3">
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputCidade">Cidade</label>
-                        <input type="text" value={props.customer.cidade} onChange={e => setCidade(e.target.value)} className="form-control" id="inputCidade" placeholder="Digite a cidade..." />
+                        <input type="text" value={cidade} onChange={e => setCidade(e.target.value)} className="form-control" id="inputCidade" placeholder="Digite a cidade..." />
                     </div>
 
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputUF">UF</label>
-                        <input type="text" value={props.customer.uf} onChange={e => setUF(e.target.value)} className="form-control" id="inputUF" placeholder="Digite o UF..." />
+                        <input type="text" value={uf} onChange={e => setUF(e.target.value)} className="form-control" id="inputUF" placeholder="Digite o UF..." />
                     </div>
 
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputComplemento">Complemento</label>
-                        <input type="text" value={props.customer.complemento} onChange={e => setComplemento(e.target.value)} className="form-control" id="inputCPF" placeholder="Digite o complemento..." />
+                        <input type="text" onChange={e => setComplemento(e.target.value)} className="form-control" id="inputComplemento" placeholder="Digite o complemento..." />
                     </div>
                 </div>
+
                 <button className="w-100 btn btn-lg btn-primary" onClick={() => handleUpdate}>Atualizar</button>
             </div>
         </div>

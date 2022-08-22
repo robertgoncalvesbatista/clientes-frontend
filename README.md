@@ -28,7 +28,7 @@
 -   [x] Usar o Eloquent para acesso a banco de dados.
 -   [x] Usar migrations para criação e alteração do banco de dados.
 -   [x] No frontend, usar tecnologia ou framework de sua preferência.
--   [ ] As validações devem ocorrer tanto no backend como no frontend.
+-   [x] As validações devem ocorrer tanto no backend como no frontend.
 -   [ ] Cobrir a aplicação com testes automatizados.
 -   [ ] A aplicação (backend e frontend) deverá ser hospedada na nuvem (opcional)
 

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useMask } from "../hooks/useMask"
 import { useApi } from "../hooks/useApi";
-import { Customer } from "../types/Customer";
 
 export const CreateCustomer = () => {
     const [name, setName] = useState("");
@@ -43,10 +42,9 @@ export const CreateCustomer = () => {
 
     const handleCreate = async () => {
         if (name && cpf && cep) {
-            const request = { name, cpf, category, cep, rua, bairro, cidade, uf, complemento, telephone }
-
-            await api.createCustomer(request);
-            navigate("/private");
+            const customer = { name, cpf, category, telephone, cep, rua, bairro, cidade, uf, complemento };
+            await api.createCustomer(customer);
+            navigate("/customers");
         }
     };
 

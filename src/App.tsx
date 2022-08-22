@@ -7,8 +7,9 @@ import { RequireAuth } from "./contexts/Auth/RequireAuth";
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Home } from "./pages/Home";
-import { Private } from './pages/Private';
+import { Customers } from './pages/Customers';
 import { CreateCustomer } from "./pages/CreateCustomer";
+import { UpdateCustomer } from "./pages/UpdateCustomer";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -20,19 +21,19 @@ const App = () => {
   }
 
   return (
-    <>
-      <header className="p-3 text-bg-dark">
+    <div className="d-flex flex-column vh-100">
+      <header className="p-3 mb-auto text-bg-dark">
         <div className="container">
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              {auth.user && <li className="nav-item"><Link to="/private" className="nav-link px-2 text-white">Private</Link></li >}
+              {auth.user && <li className="nav-item"><Link to="/customers" className="nav-link px-2 text-white">Clientes</Link></li >}
             </ul>
 
             <div className="text-end">
-              {!auth.user && <a href="/login" className="btn btn-outline-light me-2">Sign-in</a>}
-              {!auth.user && <a href="/register" className="btn btn-warning">Sign-up</a>}
+              {!auth.user && <a href="/login" className="btn btn-outline-light me-2">Login</a>}
+              {!auth.user && <a href="/register" className="btn btn-warning">Registrar</a>}
 
-              {auth.user && <button onClick={handleLogout} className="btn btn-warning">Sair</button>}
+              {auth.user && <button onClick={handleLogout} className="btn btn-warning">Deslogar</button>}
             </div>
           </div>
         </div>
@@ -42,24 +43,18 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route path="/customers" element={<RequireAuth><Customers /></RequireAuth>} />
         <Route path="/create/customer" element={<RequireAuth><CreateCustomer /></RequireAuth>} />
-        <Route path="/private" element={<RequireAuth><Private /></RequireAuth>} />
+        <Route path="/update/customer/:id" element={<RequireAuth><UpdateCustomer /></RequireAuth>} />
       </Routes>
 
-      <footer className="container">
-        <div className="py-3 my-4">
-          <ul className="nav justify-content-center border-bottom pb-3 mb-3">
-            <li className="nav-item"><a href="#" className="nav-link px-2 text-muted">Home</a></li>
-            <li className="nav-item"><a href="#" className="nav-link px-2 text-muted">Features</a></li>
-            <li className="nav-item"><a href="#" className="nav-link px-2 text-muted">Pricing</a></li>
-            <li className="nav-item"><a href="#" className="nav-link px-2 text-muted">FAQs</a></li>
-            <li className="nav-item"><a href="#" className="nav-link px-2 text-muted">About</a></li>
-          </ul>
-
-          <p className="text-center text-muted">© 2022 Company, Inc</p>
+      <footer className="footer mt-auto py-3 bg-dark">
+        <div className="container">
+          <span className="text-light">Devenvolvido por Robert Gonçalves Batista.</span>
         </div>
       </footer>
-    </>
+    </div>
   )
 }
 
