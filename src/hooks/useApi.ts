@@ -3,7 +3,7 @@ import { Customer, CustomerAddress } from "../types/Customer";
 
 // Cria a instância de conexão com a API
 const api = axios.create({
-    baseURL: "https://customers-app-backend.herokuapp.com/",
+    baseURL: import.meta.env.VITE_APP_URL,
     // timeout: 1000,
 })
 
