@@ -18,6 +18,9 @@ export const UpdateCustomer = () => {
 
     const mask = useMask();
     const api = useApi();
+
+    const { id } = useParams();
+
     const navigate = useNavigate();
 
     const fetchCEP = (cep: string) => {
@@ -39,14 +42,10 @@ export const UpdateCustomer = () => {
             });
     }
 
-    const { id } = useParams();
-
     const handleUpdate = async () => {
         if (name && cpf && cep) {
             const customer = { name, cpf, category, telephone, cep, rua, bairro, cidade, uf, complemento };
-
             await api.updateCustomer(id, customer);
-
             navigate("/customers");
         }
     };
@@ -83,7 +82,10 @@ export const UpdateCustomer = () => {
                 <div className="d-flex mb-3">
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputCEP">CEP</label>
-                        <input type="text" value={cep} onChange={e => { fetchCEP(e.target.value); setCEP(mask.cep(e.target.value)); }} className="form-control" id="inputCEP" placeholder="Digite o CEP..." />
+                        <input type="text" value={cep} onChange={e => {
+                            fetchCEP(e.target.value);
+                            setCEP(mask.cep(e.target.value));
+                        }} className="form-control" id="inputCEP" placeholder="Digite o CEP..." />
                     </div>
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputRua">Rua</label>
@@ -113,7 +115,7 @@ export const UpdateCustomer = () => {
                     </div>
                 </div>
 
-                <button className="w-100 btn btn-lg btn-primary" onClick={() => handleUpdate}>Atualizar</button>
+                <button className="w-100 btn btn-lg btn-primary" onClick={handleUpdate}>Atualizar</button>
             </div>
         </div>
     )

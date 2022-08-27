@@ -3,8 +3,7 @@ import { Customer, CustomerAddress } from "../types/Customer";
 
 // Cria a instância de conexão com a API
 const api = axios.create({
-    baseURL: "http://localhost:8000",
-    // timeout: 1000,
+    baseURL: import.meta.env.VITE_API_URL,
 })
 
 const token = localStorage.getItem("authToken");
