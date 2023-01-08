@@ -11,15 +11,13 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     // Ainda no contexto de autenticação, o useEffect será chamado para validar o token
     // Isso permite que apenas sessões com token acessem as páginas do sistema após login
     useEffect(() => {
-        (async () => {
-            if (localStorage.getItem("authToken")) {
-                const data = await api.validateToken();
+        const handler = async () => {
+            return await api.validateToken();
+        }
 
-                if (data) {
-                    setUser(data);
-                }
-            }
-        })()
+        if (localStorage.getItem("authToken")) {
+            handler().then((data) => setUser(data))
+        }
     }, [api]);
 
     // Gera um token de acesso ao fornecer "email" e "password"
@@ -29,6 +27,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         if (data.user && data.token) {
             setUser(data.user);
             setToken(data.token);
+
             return true;
         }
 
@@ -42,6 +41,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         if (data.user && data.token) {
             setUser(data.user);
             setToken(data.token);
+
             return true;
         }
 

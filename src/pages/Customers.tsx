@@ -6,15 +6,15 @@ export const Customers = () => {
     const [customers, setCustomers] = useState<Customer[]>([]);
     const api = useApi();
 
-    (async () => {
-        try {
-            const data = await api.allCustomers();
-
-            setCustomers(data);
-        } catch (err) {
-            throw err
-        }
-    })()
+    useEffect(() => {
+        api.allCustomers()
+            .then((data) => {
+                setCustomers(data);
+            })
+            .catch((err) => {
+                throw err
+            })
+    }, [customers])
 
     const deleteData = async (id: number | undefined) => {
         await api.deleteCustomer(id);

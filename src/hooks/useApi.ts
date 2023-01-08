@@ -13,7 +13,14 @@ const token = localStorage.getItem("authToken");
 export const useApi = () => ({
     // Chama a rota "/api/validate" da API para validar o token
     validateToken: async () => {
-        const response = await api.get("/api/user", { headers: { 'Authorization': 'Bearer ' + token }});
+        const response = await api.get("/api/user", {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            }
+        });
+
         return response.data;
     },
     // Chama a rota "/api/authenticate" da API para autenticar o usuário e gerar o seu token
@@ -28,34 +35,46 @@ export const useApi = () => ({
     },
     // Chama a rota "/api/logout" da API para destruir o token na sessão
     logout: async () => {
-        const response = await api.get("/api/logout", { headers: { 'Authorization': 'Bearer ' + token }});
+        const response = await api.get("/api/logout", {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+
         return response.data;
     },
 
     allCustomers: async () => {
-        const response = await api.get("/api/users/customers", { headers: { 'Authorization': 'Bearer ' + token }});
+        const response = await api.get("/api/users/customers", {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+
         return response.data;
     },
-    createCustomer: async ( customer: CustomerAddress ) => {
+    createCustomer: async (customer: CustomerAddress) => {
         const response = await api.post("/api/customers/create", customer, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
+
         return response.data;
     },
     readCustomer: async (id: string | undefined) => {
         const response = await api.get(`/api/customers/read/${id}`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
+
         return response.data;
     },
     updateCustomer: async (id: string | undefined, customer: CustomerAddress) => {
         const response = await api.put(`/api/customers/update/${id}`, customer, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
+
         return response.data;
     },
     deleteCustomer: async (id: number | undefined) => {
-        const response = await api.delete(`/api/customers/destroy/${id}`, { headers: { 'Authorization': 'Bearer ' + token } });
+        const response = await api.delete(`/api/customers/destroy/${id}`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+
         return response.data;
     },
 });
