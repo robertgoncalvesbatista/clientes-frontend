@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { useMask } from "../hooks/useMask"
-import { useApi } from "../hooks/useApi";
+import { useMask } from "../../../hooks/useMask";
+import { useApi } from "../../../hooks/useApi";
 
-export const UpdateCustomer = () => {
+function CreateCustomer() {
     const [name, setName] = useState("");
     const [cpf, setCPF] = useState("");
     const [category, setCategory] = useState("");
@@ -18,6 +18,7 @@ export const UpdateCustomer = () => {
 
     const mask = useMask();
     const api = useApi();
+
     const navigate = useNavigate();
 
     const fetchCEP = (cep: string) => {
@@ -28,7 +29,7 @@ export const UpdateCustomer = () => {
                 if (response.ok) {
                     return response.json();
                 }
-                throw response
+                throw response;
             }).then(data => {
                 setRua(data.logradouro);
                 setBairro(data.bairro);
@@ -37,16 +38,12 @@ export const UpdateCustomer = () => {
             }).catch(err => {
                 throw err;
             });
-    }
+    };
 
-    const { id } = useParams();
-
-    const handleUpdate = async () => {
+    const handleCreate = async () => {
         if (name && cpf && cep) {
             const customer = { name, cpf, category, telephone, cep, rua, bairro, cidade, uf, complemento };
-
-            await api.updateCustomer(id, customer);
-
+            await api.createCustomer(customer);
             navigate("/customers");
         }
     };
@@ -83,7 +80,10 @@ export const UpdateCustomer = () => {
                 <div className="d-flex mb-3">
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputCEP">CEP</label>
-                        <input type="text" value={cep} onChange={e => { fetchCEP(e.target.value); setCEP(mask.cep(e.target.value)); }} className="form-control" id="inputCEP" placeholder="Digite o CEP..." />
+                        <input type="text" value={cep} onChange={e => {
+                            fetchCEP(e.target.value);
+                            setCEP(mask.cep(e.target.value));
+                        }} className="form-control" id="inputCEP" placeholder="Digite o CEP..." />
                     </div>
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputRua">Rua</label>
@@ -109,12 +109,13 @@ export const UpdateCustomer = () => {
 
                     <div className="w-100 mx-4">
                         <label className="form-label" htmlFor="inputComplemento">Complemento</label>
-                        <input type="text" onChange={e => setComplemento(e.target.value)} className="form-control" id="inputComplemento" placeholder="Digite o complemento..." />
+                        <input type="text" onChange={e => setComplemento(e.target.value)} className="form-control" id="inputCPF" placeholder="Digite o complemento..." />
                     </div>
                 </div>
-
-                <button className="w-100 btn btn-lg btn-primary" onClick={() => handleUpdate}>Atualizar</button>
+                <button className="w-100 btn btn-lg btn-primary" onClick={handleCreate}>Criar</button>
             </div>
         </div>
-    )
+    );
 }
+
+export default CreateCustomer;

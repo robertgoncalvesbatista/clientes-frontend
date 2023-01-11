@@ -7,7 +7,7 @@ export type Customer = {
     category?: string;
     telephone?: string;
     address: Address;
-}
+};
 
 export type CustomerAddress = {
     name: string;
@@ -20,4 +20,4 @@ export type CustomerAddress = {
     cidade?: string;
     uf?: string;
     complemento?: string;
-}
+};

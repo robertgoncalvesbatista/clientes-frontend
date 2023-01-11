@@ -5,4 +5,4 @@ export type Address = {
     cidade?: string;
     uf?: string;
     complemento?: string;
-}
+};

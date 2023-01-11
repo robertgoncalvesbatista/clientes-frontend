@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { useApi } from "../../hooks/useApi";
 import { User } from "../../types/User";
 import { AuthContext } from "./AuthContext";
@@ -13,12 +14,14 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     useEffect(() => {
         const handler = async () => {
             return await api.validateToken();
-        }
+        };
 
         if (localStorage.getItem("authToken")) {
-            handler().then((data) => setUser(data))
+            handler()
+                .then(data => setUser(data))
+                .catch(err => console.error(err));
         }
-    }, [api]);
+    }, []);
 
     // Gera um token de acesso ao fornecer "email" e "password"
     const signin = async (email: string, password: string) => {
@@ -32,7 +35,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         }
 
         return false;
-    }
+    };
 
     // Gera um token de acesso ao fornecer "email" e "password"
     const signup = async (name: string, email: string, password: string, password_confirmation: string) => {
@@ -46,19 +49,19 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         }
 
         return false;
-    }
+    };
 
     // Destrói a sessão
     const signout = async () => {
         await api.logout();
 
         setUser(null);
-    }
+    };
 
     // Guarda o token no localStorage do navegador
     const setToken = (token: string) => {
         localStorage.setItem("authToken", token);
-    }
+    };
 
     // Retorna o elemento JSX do AuthProvider dentro do contexto de autenticação
     // Isso permite que o AuthProvider seja utilizado com elemento do HTML
@@ -66,5 +69,5 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         <AuthContext.Provider value={{ user, signin, signup, signout }}>
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};

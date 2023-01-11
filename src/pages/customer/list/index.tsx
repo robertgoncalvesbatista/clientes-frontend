@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../hooks/useApi";
-import { Customer } from "../types/Customer";
+import { Customer } from "../../../types/Customer";
+import { useApi } from "../../../hooks/useApi";
 
-export const Customers = () => {
+function Customers() {
     const [customers, setCustomers] = useState<Customer[]>([]);
     const api = useApi();
 
@@ -12,13 +12,13 @@ export const Customers = () => {
                 setCustomers(data);
             })
             .catch((err) => {
-                throw err
-            })
-    }, [customers])
+                throw err;
+            });
+    }, [customers]);
 
     const deleteData = async (id: number | undefined) => {
         await api.deleteCustomer(id);
-    }
+    };
 
     return (
         <div className="px-4 py-5 my-5 text-center">
@@ -60,12 +60,14 @@ export const Customers = () => {
                                             <button className="btn btn-danger" onClick={() => deleteData(value.id)}>Excluir</button>
                                         </td>
                                     </tr>
-                                )
+                                );
                             })
                         }
                     </tbody>
                 </table>
             </div>
         </div >
-    )
+    );
 }
+
+export default Customers;

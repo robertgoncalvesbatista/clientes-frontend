@@ -5,7 +5,7 @@ import { Customer, CustomerAddress } from "../types/Customer";
 const api = axios.create({
     baseURL: import.meta.env.VITE_APP_URL,
     // timeout: 1000,
-})
+});
 
 const token = localStorage.getItem("authToken");
 
@@ -15,9 +15,7 @@ export const useApi = () => ({
     validateToken: async () => {
         const response = await api.get("/api/user", {
             headers: {
-                'Authorization': 'Bearer ' + token,
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                'Authorization': 'Bearer ' + token
             }
         });
 

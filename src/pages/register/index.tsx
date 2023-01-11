@@ -1,8 +1,14 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/Auth/AuthContext";
 
-export const Register = () => {
+import { AuthContext } from "../../contexts/Auth/AuthContext";
+
+import HeaderComponent from "../../components/header";
+import FooterComponent from "../../components/footer";
+
+import { ContainerRegister } from "./styles";
+
+function Register() {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -11,7 +17,7 @@ export const Register = () => {
     const [password, setPassword] = useState("");
     const [password_confirmation, setConfirmPass] = useState("");
 
-    const handleRegister = async () => {
+    async function handleRegister() {
         if (name && email && password && password_confirmation) {
             const isLogged = await auth.signup(name, email, password, password_confirmation);
 
@@ -21,10 +27,12 @@ export const Register = () => {
                 alert("Não deu certo!");
             }
         }
-    };
+    }
 
     return (
-        <div className="container col-xl-10 col-xxl-8 px-4 py-5">
+        <ContainerRegister>
+            <HeaderComponent />
+
             <div className="row align-items-center g-lg-5 py-5">
                 <div className="col-lg-7 text-center text-lg-start">
                     <h1 className="display-4 fw-bold lh-1 mb-3">Vertically centered hero sign-up form</h1>
@@ -53,6 +61,10 @@ export const Register = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    )
+
+            <FooterComponent />
+        </ContainerRegister>
+    );
 }
+
+export default Register;
