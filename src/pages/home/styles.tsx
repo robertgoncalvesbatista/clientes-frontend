@@ -2,7 +2,7 @@ import stitches from '../../stitches.config';
 
 const ContainerHome = stitches.styled('div', {
     width: "100%",
-    height: '100vh',
+    height: '100%',
 
     display: 'flex',
     flexDirection: 'column',
