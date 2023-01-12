@@ -10,16 +10,19 @@ const ContainerRegister = stitches.styled('div', {
     marginRight: 'auto',
     marginLeft: 'auto',
 
-    maxWidth: '16em',
+    maxWidth: '90%',
 
     '@sm': {
-        maxWidth: '16em',
+        maxWidth: '90%',
     },
     '@md': {
-        maxWidth: '32em',
+        maxWidth: '90%',
     },
     '@lg': {
-        maxWidth: '64em',
+        maxWidth: '90%',
+    },
+    '@xlg': {
+        maxWidth: '1320px',
     },
 });
 

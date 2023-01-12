@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../contexts/Auth/AuthContext";
-import { Container } from "./styles";
+import { AlignItems, Button, Container, LinkItem } from "./styles";
 
 function HeaderComponent() {
     const auth = useContext(AuthContext);
@@ -15,18 +15,26 @@ function HeaderComponent() {
 
     return (
         <Container>
-            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    {auth.user && <li className="nav-item"><Link to="/customers" className="nav-link px-2 text-white">Clientes</Link></li >}
-                </ul>
-
-                <div className="text-end">
-                    {!auth.user && <a href="/login" className="btn btn-outline-light me-2">Login</a>}
-                    {!auth.user && <a href="/register" className="btn btn-warning">Registrar</a>}
-
-                    {auth.user && <button onClick={handleLogout} className="btn btn-warning">Deslogar</button>}
+            <AlignItems>
+                <div style={{ display: 'flex' }}>
+                    <img src="https://flowbite.com/docs/images/logo.svg" style={{ margin: '0 0.25rem' }} alt="Flowbite Logo" />
+                    <h2 style={{ color: '#fff', margin: '0 0.25rem' }}>Clientes Frontend</h2>
+                    {auth.user && <LinkItem href="/customers" style={{ margin: '0 2rem' }}>Clientes</LinkItem>}
                 </div>
-            </div>
+
+
+                {!auth.user &&
+                    <div>
+                        <LinkItem href="/login" button>Login</LinkItem>
+                        <LinkItem href="/register" button>Register</LinkItem>
+                    </div>
+                }
+
+                {auth.user &&
+                    <Button onClick={handleLogout}>Deslogar</Button>
+                }
+
+            </AlignItems>
         </Container>
     );
 }

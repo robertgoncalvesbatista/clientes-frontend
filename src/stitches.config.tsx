@@ -4,23 +4,26 @@ const stitches = createStitches({
     media: {
         sm: '(min-width: 320px)',
         md: '(min-width: 768px)',
-        lg: '(min-width: 1200px)'
+        lg: '(min-width: 1200px)',
+        xlg: '(min-width: 1400px)',
     },
     theme: {
         colors: {
             // generated from coolors.co
-            aliceBlue: '#F4FAFF',
-            davyGrey: '#535657',
+            white: '#FBF9FA',
+            black: '#121519',
 
-            cadetBlue: '#4F646F',
-            platinum: '#DEE7E7',
+            blueOne: '#0A2647',
+            blueTwo: '#144272',
+            blueThree: '#205295',
+            blueFour: '#2C74B3',
 
-            darkKhaki: '#B5BA72',
-            darkSlateBlue: '#4F359B',
+            redOne: '#A80038',
+            redTwo: '#FD0054',
 
             // elements
-            bg: '$aliceBlue',
-            fg: '$davyGrey'
+            bg: '$white',
+            fg: '$black',
         },
         space: {
             xxs: '0.422rem',
@@ -49,12 +52,19 @@ const injectGlobalStyles = stitches.globalCss({
     '*, *:after, *:before': {
         margin: 0,
         padding: 0,
+
         boxSizing: 'border-box',
-        textDecoration: 'none'
+        textDecoration: 'none',
+        color: '$fg',
+        fontFamily: 'Poppins, sans-serif'
     },
     body: {
         fontSize: '100%',
-        listStyleType: 'none'
+        listStyleType: 'none',
+        background: '$bg',
+    },
+    'ul, li, ol': {
+        listStyle: 'none',
     }
 });
 

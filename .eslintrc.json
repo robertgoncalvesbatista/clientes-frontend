@@ -16,7 +16,13 @@
   "plugins": ["react"],
   "rules": {
     "semi": "off",
+    "indent": ["error", 4],
     "@typescript-eslint/semi": ["error"],
-    "indent": ["error", 4]
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ]
   }
 }
