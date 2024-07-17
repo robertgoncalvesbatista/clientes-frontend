@@ -9,54 +9,121 @@ import FooterComponent from "../../components/footer";
 import { ContainerLogin } from "./styles";
 
 function Login() {
-    const auth = useContext(AuthContext);
-    const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    async function handleLogin() {
-        if (email && password) {
-            const isLogged = await auth.signin(email, password);
+  async function handleLogin() {
+    if (email && password) {
+      const isLogged = await auth.signin(email, password);
 
-            if (isLogged) {
-                navigate("/");
-            } else {
-                alert("Não deu certo!");
-            }
-        }
+      if (isLogged) {
+        navigate("/");
+      } else {
+        alert("Não deu certo!");
+      }
     }
+  }
 
-    return (
-        <ContainerLogin>
-            <HeaderComponent />
-
-            <div className="container col-xl-10 col-xxl-8 px-4 py-5">
-                <div className="row align-items-center g-lg-5 py-5">
-                    <div className="col-lg-7 text-center text-lg-start">
-                        <h1 className="display-4 fw-bold lh-1 mb-3">Vertically centered hero sign-up form</h1>
-                        <p className="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
-                    </div>
-                    <div className="col-md-10 mx-auto col-lg-5">
-                        <div className="p-4 p-md-5 border rounded-3 bg-light">
-                            <div className="form-floating mb-3">
-                                <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="form-control" id="floatingInput" placeholder="name@example.com" />
-                                <label htmlFor="floatingInput">Email address</label>
-                            </div>
-                            <div className="form-floating mb-3">
-                                <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="form-control" id="floatingPassword" placeholder="Password" />
-                                <label htmlFor="floatingPassword">Password</label>
-                            </div>
-
-                            <button className="w-100 btn btn-lg btn-primary" onClick={handleLogin}>Acessar</button>
-                        </div>
-                    </div>
+  return (
+    <section className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a
+          href="#"
+          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+        >
+          <img
+            className="w-8 h-8 mr-2"
+            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            alt="logo"
+          />
+          Flowbite
+        </a>
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Sign in to your account
+            </h1>
+            <form className="space-y-4 md:space-y-6" action="#">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="name@company.com"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="remember"
+                      aria-describedby="remember"
+                      type="checkbox"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor="remember"
+                      className="text-gray-500 dark:text-gray-300"
+                    >
+                      Remember me
+                    </label>
+                  </div>
                 </div>
-            </div>
-
-            <FooterComponent />
-        </ContainerLogin>
-    );
+                <a
+                  href="#"
+                  className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <button
+                type="submit"
+                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                Sign in
+              </button>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                Don’t have an account yet?{" "}
+                <a
+                  href="#"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Sign up
+                </a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default Login;
