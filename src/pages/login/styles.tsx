@@ -1,28 +1,26 @@
-import stitches from '../../stitches.config';
+import stitches from "../../stitches.config";
 
-const ContainerLogin = stitches.styled('div', {
-    width: "100%",
-    height: '100vh',
+const ContainerLogin = stitches.styled("div", {
+  width: "100%",
+  height: "100vh",
 
-    display: 'flex',
-    flexDirection: 'column',
+  display: "flex",
+  flexDirection: "column",
 
-    marginRight: 'auto',
-    marginLeft: 'auto',
+  marginRight: "auto",
+  marginLeft: "auto",
 
-    maxWidth: '16em',
+  maxWidth: "16em",
 
-    '@sm': {
-        maxWidth: '16em',
-    },
-    '@md': {
-        maxWidth: '32em',
-    },
-    '@lg': {
-        maxWidth: '64em',
-    },
+  "@sm": {
+    maxWidth: "16em",
+  },
+  "@md": {
+    maxWidth: "32em",
+  },
+  "@lg": {
+    maxWidth: "64em",
+  },
 });
 
-export {
-    ContainerLogin
-};
+export { ContainerLogin };
