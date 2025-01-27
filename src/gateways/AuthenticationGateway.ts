@@ -11,10 +11,19 @@ interface IAuthenticationGateway {
 export class AuthenticationGateway implements IAuthenticationGateway {
   constructor(readonly httpClient: HttpClient) {}
 
+  async register(request: IRequest): Promise<IResponse> {
+    return await this.httpClient.request({
+      method: "post",
+      url: "api/register",
+      headers: request.headers,
+      body: request.body,
+    });
+  }
+
   async login(request: IRequest): Promise<IResponse> {
     return await this.httpClient.request({
       method: "post",
-      url: import.meta.env.VITE_API_URL + "api/login",
+      url: "api/login",
       headers: request.headers,
       body: request.body,
     });
@@ -23,14 +32,14 @@ export class AuthenticationGateway implements IAuthenticationGateway {
   async logout(): Promise<void> {
     return await this.httpClient.request({
       method: "post",
-      url: import.meta.env.VITE_API_URL + "api/logout",
+      url: "api/logout",
     });
   }
 
   async validateToken(request: IRequest): Promise<IResponse> {
     return await this.httpClient.request({
       method: "get",
-      url: import.meta.env.VITE_API_URL + "api/user",
+      url: "api/user",
       headers: request.headers,
     });
   }

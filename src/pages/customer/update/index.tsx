@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useMask } from "../../../hooks/useMaskHook";
-import { useApi } from "../../../gateways/useApi";
+import useMaskHook from "../../../hooks/useMaskHook";
+// import { useApi } from "../../../gateways/useApi";
 
 function UpdateCustomer() {
   const [name, setName] = useState("");
@@ -16,8 +16,8 @@ function UpdateCustomer() {
   const [uf, setUF] = useState("");
   const [complemento, setComplemento] = useState("");
 
-  const mask = useMask();
-  const api = useApi();
+  const mask = useMaskHook();
+  const api = useAuth();
   const navigate = useNavigate();
 
   const fetchCEP = (cep: string) => {

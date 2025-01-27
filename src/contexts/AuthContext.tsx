@@ -1,23 +1,26 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 
 import { AuthenticationGateway } from "../gateways/AuthenticationGateway";
-
 import { httpClientFactory } from "../adapters/AxiosHttpClientAdapter";
-
-const gateway = new AuthenticationGateway(httpClientFactory());
-
 import { User } from "../types/User";
 
-interface SigninProps {
+interface LoginProps {
   email: string;
   password: string;
 }
 
-interface SignupProps {
+interface RegisterProps {
   name: string;
   email: string;
   password: string;
-  confirmPass: string;
+  password_confirmation: string;
 }
 
 interface AuthProviderProps {
@@ -25,90 +28,82 @@ interface AuthProviderProps {
 }
 
 // Cria tipagem para o contexto de autenticação das rotas
-// Dentro deste contexto será possível utilizar a propriedade "user" e as funções "signin" e "signout"
+// Dentro deste contexto será possível utilizar a propriedade "user" e as funções "Login" e "signout"
 interface AuthContextData {
   user: User | null;
-  signin: (props: SigninProps) => Promise<boolean>;
-  signup: (props: SignupProps) => Promise<boolean>;
-  signout: () => Promise<void>;
+  token: string;
+  register: (props: RegisterProps) => Promise<any>;
+  login: (props: LoginProps) => Promise<any>;
+  logout: () => Promise<any>;
 }
+
+const gateway = new AuthenticationGateway(httpClientFactory());
 
 const AuthContext = createContext<AuthContextData>(null!);
 
-// No contexto de autenticação, AuthProvider é responsável pela lógica das funções "signin" e "signout"
+// No contexto de autenticação, AuthProvider é responsável pela lógica das funções "Login" e "signout"
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useState<User | null>(() => {
+    const value = localStorage.getItem("user");
+
+    if (!!value) {
+      return JSON.parse(value);
+    }
+
+    return null;
+  });
+  const [token] = useState<string>(() => {
+    return localStorage.getItem("token") || "";
+  });
 
   // Gera um token de acesso ao fornecer "email" e "password"
-  const signin = async ({ email, password }: SigninProps) => {
-    const data = await gateway.login({
-      body: { email, password },
-    });
+  const register = useCallback(async (props: RegisterProps) => {
+    try {
+      const response = await gateway.register({ body: props });
 
-    if (data.user && data.token) {
-      setUser(data.user);
-      setToken(data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
 
-      return true;
+      return response.data;
+    } catch (error) {
+      throw error;
     }
+  }, []);
 
-    return false;
-  };
+  // Gera um token de acesso ao fornecer "email" e "password"
+  const login = useCallback(async (props: LoginProps) => {
+    try {
+      const response = await gateway.login({ body: props });
 
-  // // Gera um token de acesso ao fornecer "email" e "password"
-  // const signup = async ({
-  //   name,
-  //   email,
-  //   password,
-  //   confirmPass,
-  // }: SignupProps) => {
-  //   const data = await gateway.logout({
-  //     body: { name, email, password, confirmPass },
-  //   });
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
 
-  //   if (data.user && data.token) {
-  //     setUser(data.user);
-  //     setToken(data.token);
-
-  //     return true;
-  //   }
-
-  //   return false;
-  // };
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }, []);
 
   // Destrói a sessão
-  const signout = async () => {
-    await gateway.logout();
+  const logout = useCallback(async () => {
+    try {
+      const response = await gateway.logout();
 
-    setUser(null);
-  };
+      localStorage.clear();
 
-  // Guarda o token no localStorage do navegador
-  const setToken = (token: string) => {
-    localStorage.setItem("authToken", token);
-  };
-
-  // Ainda no contexto de autenticação, o useEffect será chamado para validar o token
-  // Isso permite que apenas sessões com token acessem as páginas do sistema após login
-  useEffect(() => {
-    const handler = async () => {
-      return await api.validateToken();
-    };
-
-    if (localStorage.getItem("authToken")) {
-      handler()
-        .then((data) => setUser(data))
-        .catch((err) => console.error(err));
+      return response;
+    } catch (error) {
+      throw error;
     }
+  }, []);
+
+  const value = useMemo(() => {
+    return { user, token, register, login, logout };
   }, []);
 
   // Retorna o elemento JSX do AuthProvider dentro do contexto de autenticação
   // Isso permite que o AuthProvider seja utilizado com elemento do HTML
-  return (
-    <AuthContext.Provider value={{ user, signin, signup, signout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 const useAuth = (): AuthContextData => {

@@ -1,14 +1,14 @@
 import { Routes as Switch, Route, BrowserRouter } from "react-router-dom";
 
-import { RequireAuth } from "../components/RequireAuth/RequireAuth";
+import RequireAuth from "./RequireAuth";
 
 import Home from "./../pages/home";
 import Login from "./../pages/login";
 import Register from "./../pages/register";
 
 import ListCustomers from "./../pages/customer/list";
-import CreateCustomer from "./../pages/customer/create";
 import UpdateCustomer from "./../pages/customer/update";
+import CreateCustomer from "./../pages/customer/create";
 
 const Routes = () => {
   return (
@@ -26,7 +26,8 @@ const Routes = () => {
             </RequireAuth>
           }
         />
-        <Route
+
+        {/*<Route
           path="/create/customer"
           element={
             <RequireAuth>
@@ -41,7 +42,7 @@ const Routes = () => {
               <UpdateCustomer />
             </RequireAuth>
           }
-        />
+        /> */}
       </Switch>
     </BrowserRouter>
   );

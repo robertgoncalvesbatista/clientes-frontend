@@ -10,6 +10,7 @@ export interface Customer {
 }
 
 export interface CustomerAddress {
+  id?: number;
   name: string;
   cpf: string;
   category?: string;

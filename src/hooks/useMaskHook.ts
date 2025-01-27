@@ -1,29 +1,31 @@
-const useMaskHook = () => {
-  const cpf = (value: string) => {
+import { useCallback } from "react";
+
+function useMaskHook() {
+  const cpf = useCallback((value: string) => {
     return value
       .replace(/\D/g, "")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d{1,2})/, "$1-$2")
       .replace(/(-\d{2})\d+?$/, "$1");
-  };
+  }, []);
 
-  const phone = (value: string) => {
+  const phone = useCallback((value: string) => {
     return value
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d{1,2})/, "$1-$2")
       .replace(/(-\d{4})\d+?$/, "$1");
-  };
+  }, []);
 
-  const cep = (value: string) => {
+  const cep = useCallback((value: string) => {
     return value
       .replace(/\D/g, "")
       .replace(/(\d{5})(\d{1,2})/, "$1-$2")
       .replace(/(-\d{3})\d+?$/, "$1");
-  };
+  }, []);
 
   return { cpf, phone, cep };
-};
+}
 
-export { useMaskHook };
+export default useMaskHook;

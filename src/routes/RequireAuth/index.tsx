@@ -19,4 +19,4 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
   return children;
 };
 
-export { RequireAuth };
+export default RequireAuth;

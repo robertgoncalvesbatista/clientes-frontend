@@ -1,86 +1,121 @@
-import { useEffect, useState } from "react";
-import { Customer } from "../../../types/Customer";
-import { useApi } from "../../../gateways/useApi";
+import { useCallback, useEffect, useState } from "react";
 
-function Customers() {
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const api = useApi();
+import {
+  Container,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+
+import { CustomerAddress } from "../../../types/Customer";
+import { httpClientFactory } from "../../../adapters/AxiosHttpClientAdapter";
+import { CustomerGateway } from "../../../gateways/CustomerGateway";
+import CustomTable from "../../../components/CustomTable";
+
+const gateway = new CustomerGateway(httpClientFactory());
+
+function Page() {
+  const [customers, setCustomers] = useState<CustomerAddress[]>([]);
+
+  const [total, setTotal] = useState<number>(100);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+
+  const handleChangePage = useCallback(
+    async (
+      _event: React.MouseEvent<HTMLButtonElement> | null,
+      newPage: number
+    ) => {
+      const response = await gateway.index({
+        params: { page: newPage + 1 },
+      });
+
+      setCustomers(response.data.data);
+      setPage(newPage);
+    },
+    []
+  );
+
+  const handleChangeRowsPerPage = useCallback(
+    async (
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const response = await gateway.index({
+        params: { per_page: parseInt(event.target.value, 10) },
+      });
+
+      setCustomers(response.data.data);
+
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    },
+    []
+  );
+
+  const handleFecth = useCallback(async () => {
+    try {
+      const response = await gateway.index();
+
+      setCustomers(response.data.data);
+      setTotal(response.data.meta.total);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   useEffect(() => {
-    api
-      .allCustomers()
-      .then((data) => {
-        setCustomers(data);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  }, [customers]);
+    handleFecth();
+  }, [handleFecth]);
 
-  const deleteData = async (id: number | undefined) => {
-    await api.deleteCustomer(id);
-  };
+  // const deleteData = async (id: number | undefined) => {
+  //   await api.deleteCustomer(id);
+  // };
 
   return (
-    <div className="px-4 py-5 my-5 text-center">
-      <div className="container-fluid rounded shadow bg-light p-4 mb-3">
-        <div className="w-100 d-flex justify-content-evenly">
-          <h3>Clientes cadastrados</h3>
-          <a href="/create/customer" className="btn btn-primary">
-            Cadastrar cliente
-          </a>
-        </div>
-      </div>
+    <Container component="main" maxWidth="lg">
+      <CustomTable
+        pagination={{
+          page,
+          total,
+          rowsPerPage,
+          handleChangePage,
+          handleChangeRowsPerPage,
+        }}
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell>Nome</TableCell>
+            <TableCell>CPF</TableCell>
+            <TableCell>Categoria</TableCell>
+            <TableCell>Telefone</TableCell>
+            <TableCell>Rua</TableCell>
+            <TableCell>Bairro</TableCell>
+            <TableCell>Cidade</TableCell>
+          </TableRow>
+        </TableHead>
 
-      <div className="container-fluid rounded shadow bg-light p-4">
-        <table className="table table-striped mb-3">
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">CPF</th>
-              <th scope="col">Categoria</th>
-              <th scope="col">Telefone</th>
-              <th scope="col">Endereço</th>
-              <th scope="col">Config</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map((value, index) => {
-              return (
-                <tr>
-                  <td>{value.name}</td>
-                  <td>{value.cpf}</td>
-                  <td>{value.category}</td>
-                  <td>{value.telephone}</td>
-                  <td>
-                    <small>
-                      {value.address.rua}, {value.address.complemento} -{" "}
-                      {value.address.bairro} | CEP: {value.address.cep} |{" "}
-                      {value.address.cidade}/{value.address.uf}
-                    </small>
-                  </td>
-                  <td>
-                    <a
-                      href={"/update/customer/" + value.id}
-                      className="btn btn-secondary"
-                    >
-                      Editar
-                    </a>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => deleteData(value.id)}
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <TableBody>
+          {customers.map((value) => (
+            <TableRow
+              key={value.id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {value.name}
+              </TableCell>
+              <TableCell>{value.cpf}</TableCell>
+              <TableCell>{value.category}</TableCell>
+              <TableCell>{value.telephone}</TableCell>
+              <TableCell>{value.rua}</TableCell>
+              <TableCell>{value.bairro}</TableCell>
+              <TableCell>{value.cidade}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </CustomTable>
+    </Container>
   );
 }
 
-export default Customers;
+export default Page;

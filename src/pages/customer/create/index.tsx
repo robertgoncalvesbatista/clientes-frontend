@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useMask } from "../../../hooks/useMaskHook";
+import useMaskHook from "../../../hooks/useMaskHook";
 import { useApi } from "../../../gateways/useApi";
 
 function CreateCustomer() {
@@ -16,7 +16,7 @@ function CreateCustomer() {
   const [uf, setUF] = useState("");
   const [complemento, setComplemento] = useState("");
 
-  const mask = useMask();
+  const mask = useMaskHook();
   const api = useApi();
 
   const navigate = useNavigate();

@@ -1,11 +1,14 @@
+import { AxiosRequestHeaders } from "axios";
+
 export interface IResponse {
-  body: any;
+  data: any;
   status: number;
   statusText: string;
 }
 
 export interface IRequest {
-  headers?: any;
+  headers?: AxiosRequestHeaders;
+  params?: Record<string, any>;
   body?: any;
   id?: string;
 }

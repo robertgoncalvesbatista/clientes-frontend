@@ -1,114 +1,117 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../../contexts/AuthContext";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-import HeaderComponent from "../../components/header";
-import FooterComponent from "../../components/footer";
+import { Box, Button, Card, Container, Link, Typography } from "@mui/material";
 
-import { ContainerRegister } from "./styles";
+import InputTextControlled from "../../components/InputText";
+import { useAuth } from "../../contexts/AuthContext";
 
-function Register() {
-  const auth = useContext(AuthContext);
+import { registerValidation } from "../../validations/validators";
+import { RegisterValidator } from "../../validations/protocols";
+
+interface IRegister {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
+function Page() {
   const navigate = useNavigate();
+  const { register } = useAuth();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password_confirmation, setConfirmPass] = useState("");
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+  } = useForm<RegisterValidator>({
+    resolver: yupResolver(registerValidation),
+  });
 
-  async function handleRegister() {
-    if (name && email && password && password_confirmation) {
-      const isLogged = await auth.signup(
-        name,
-        email,
-        password,
-        password_confirmation
-      );
-
-      if (isLogged) {
-        navigate("/");
-      } else {
-        alert("Não deu certo!");
-      }
-    }
-  }
+  const handleRegister = useCallback(async (data: IRegister) => {
+    await register(data)
+      .then(() => {
+        navigate("/customers");
+      })
+      .catch(() => {
+        console.log("Erro ao fazer cadastro");
+      });
+  }, []);
 
   return (
-    <ContainerRegister>
-      <HeaderComponent />
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Card variant="outlined" sx={{ p: 4 }}>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
 
-      <div className="row align-items-center g-lg-5 py-5">
-        <div className="col-lg-7 text-center text-lg-start">
-          <h1 className="display-4 fw-bold lh-1 mb-3">
-            Vertically centered hero sign-up form
-          </h1>
-          <p className="col-lg-10 fs-4">
-            Below is an example form built entirely with Bootstrap’s form
-            controls. Each required form group has a validation state that can
-            be triggered by attempting to submit the form without completing it.
-          </p>
-        </div>
-        <div className="col-md-10 mx-auto col-lg-5">
-          <div className="p-4 p-md-5 border rounded-3 bg-light">
-            <div className="form-floating mb-3">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="form-control"
-                id="floatingName"
-                placeholder="Digite seu nome..."
-              />
-              <label htmlFor="floatingName">Nome</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="form-control"
-                id="floatingEmail"
-                placeholder="Digite seu e-mail..."
-              />
-              <label htmlFor="floatingEmail">Email</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="form-control"
-                id="floatingPassword"
-                placeholder="Digite sua senha..."
-              />
-              <label htmlFor="floatingPassword">Password</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input
-                type="password"
-                value={password_confirmation}
-                onChange={(e) => setConfirmPass(e.target.value)}
-                className="form-control"
-                id="floatingConfirmPassword"
-                placeholder="Confirme sua senha..."
-              />
-              <label htmlFor="floatingConfirmPassword">Confirm Password</label>
-            </div>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(handleRegister)}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <InputTextControlled
+              name="name"
+              label="Nome"
+              control={control}
+              error={errors.name}
+            />
 
-            <button
-              className="w-100 btn btn-lg btn-primary"
-              onClick={handleRegister}
+            <InputTextControlled
+              name="email"
+              label="Email"
+              control={control}
+              error={errors.email}
+            />
+
+            <InputTextControlled
+              name="password"
+              label="Senha"
+              control={control}
+              error={errors.password}
+            />
+
+            <InputTextControlled
+              name="password_confirmation"
+              label="Confirmar senha"
+              control={control}
+              error={errors.password_confirmation}
+            />
+
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+              sx={{ mt: 3, mb: 2 }}
             >
-              Registrar
-            </button>
-          </div>
-        </div>
-      </div>
+              Acessar
+            </Button>
 
-      <FooterComponent />
-    </ContainerRegister>
+            <Typography variant="body2">
+              Você já possui cadastro?{" "}
+              <Link href="/login" variant="body2">
+                Acesse aqui!
+              </Link>
+            </Typography>
+          </Box>
+        </Card>
+      </Box>
+    </Container>
   );
 }
 
-export default Register;
+export default Page;
